@@ -46,7 +46,13 @@ async function loadLogs() {
 
         tr.innerHTML = `
             <td>${log.username}</td>
-            <td>${log.status}</td>
+            <td>
+    ${
+        log.status === "success"
+        ? '<span style="color:#16a34a;font-weight:bold;">🟢 success</span>'
+        : '<span style="color:#dc2626;font-weight:bold;">🔴 failed</span>'
+    }
+</td>
             <td>${new Date(log.login_time).toLocaleString("ja-JP")}</td>
         `;
 
