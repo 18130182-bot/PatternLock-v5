@@ -57,14 +57,28 @@ async function authenticate(pattern) {
                 location.href = "home.html";
             }, 800);
 
-        } else {
+       } else {
 
-            message.style.color = "#dc2626";
-            message.textContent = "パターンが違います";
+    // ログイン失敗を記録
+    const { error: logError } = await window.db
+        .from("login_logs")
+        .insert([
+            {
+                username: data.username,
+                status: "failed"
+            }
+        ]);
 
-            clearPattern();
+    if (logError) {
+        console.error("ログ保存エラー:", logError);
+    }
 
-        }
+    message.style.color = "#dc2626";
+    message.textContent = "パターンが違います";
+
+    clearPattern();
+
+}
 
     } catch (e) {
 
