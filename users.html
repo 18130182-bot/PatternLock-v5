@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ユーザー管理 | PatternLock Secure</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+}
+
+header{
+    height:70px;
+    background:#2563eb;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+}
+
+.container{
+    max-width:1100px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.card{
+    background:#fff;
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    padding:25px;
+    margin-bottom:25px;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:14px;
+    border-bottom:1px solid #ddd;
+    text-align:left;
+}
+
+th{
+    background:#2563eb;
+    color:#fff;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    margin-top:8px;
+}
+
+button{
+    margin-top:15px;
+    padding:12px 18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.primary{
+    background:#2563eb;
+    color:#fff;
+}
+
+.danger{
+    background:#dc2626;
+    color:#fff;
+}
+
+.back{
+    display:inline-block;
+    margin-top:20px;
+    text-decoration:none;
+    color:#2563eb;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h2>👥 ユーザー管理</h2>
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h1>登録ユーザー</h1>
+
+<table>
+
+<thead>
+<tr>
+<th>ユーザー名</th>
+<th>パターン</th>
+<th>削除</th>
+</tr>
+</thead>
+
+<tbody id="userTable">
+
+<tr>
+<td colspan="3">
+読み込み中...
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h1>新規ユーザー追加</h1>
+
+<label>ユーザー名</label>
+<input id="newUsername" placeholder="例：admin2">
+
+<label style="margin-top:15px;display:block;">
+パターン
+</label>
+
+<input id="newPattern" placeholder="例：1-2-5-8">
+
+<button id="addUser" class="primary">
+➕ ユーザー追加
+</button>
+
+<p id="message"></p>
+
+</div>
+
+<a class="back" href="home.html">
+← ダッシュボードへ戻る
+</a>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/users.js"></script>
+
+</body>
+</html>
