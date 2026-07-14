@@ -41,20 +41,36 @@ async function authenticate(pattern) {
             return;
         }
 
-        // パターン一致
-        if (data.pattern_hash === patternString) {
+     // パターン一致
+if (data.pattern_hash === patternString) {
 
-            message.style.color = "#16a34a";
-            message.textContent = "ログイン成功";
+    message.style.color = "#16a34a";
+    message.textContent = "ログイン成功";
 
-            // ログイン状態を保存
-            sessionStorage.setItem("loggedIn", "true");
-            sessionStorage.setItem("username", data.username);
+    // ログイン履歴を保存
+    const { error: logError } = await window.db
+        .from("login_logs")
+        .insert([
+            {
+                username: data.username,
+                status: "success"
+            }
+        ]);
 
-            // 少し待って画面遷移
-            setTimeout(() => {
-                location.href = "home.html";
-            }, 800);
+    if (logError) {
+        console.error("ログ保存エラー:", logError);
+    }
+
+    // ログイン状態を保存
+    sessionStorage.setItem("loggedIn", "true");
+    sessionStorage.setItem("username", data.username);
+
+    // 少し待って画面遷移
+    setTimeout(() => {
+        location.href = "home.html";
+    }, 800);
+
+}
 
         } else {
 
