@@ -85,6 +85,11 @@ main{
     margin-bottom:10px;
 }
 
+.card p{
+    font-size:20px;
+    font-weight:bold;
+}
+
 .logout{
     background:#dc2626;
     color:white;
@@ -103,6 +108,7 @@ main{
 <h1>🔒 PatternLock Secure</h1>
 
 <div>
+
 <span id="username"></span>
 
 <button class="logout" onclick="logout()">
@@ -119,7 +125,7 @@ main{
 
 <h2>メニュー</h2>
 
-<a href="#">🏠 ダッシュボード</a>
+<a href="home.html">🏠 ダッシュボード</a>
 <a href="change-pattern.html">🔑 パターン変更</a>
 <a href="admin.html">⚙ 管理画面</a>
 <a href="logs.html">📜 ログイン履歴</a>
@@ -138,12 +144,27 @@ main{
 
 <div class="card">
 <h3>👤 ユーザー</h3>
-<p>admin</p>
+<p id="userName">読み込み中...</p>
 </div>
 
 <div class="card">
-<h3>🔒 セキュリティ</h3>
-<p>正常</p>
+<h3>👥 ユーザー数</h3>
+<p id="userCount">読み込み中...</p>
+</div>
+
+<div class="card">
+<h3>📜 ログイン履歴</h3>
+<p id="logCount">読み込み中...</p>
+</div>
+
+<div class="card">
+<h3>🕒 最終ログイン</h3>
+<p id="lastLogin">読み込み中...</p>
+</div>
+
+<div class="card">
+<h3>🟢 システム状態</h3>
+<p id="systemStatus">確認中...</p>
 </div>
 
 <div class="card">
@@ -157,17 +178,58 @@ main{
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+
 <script>
 
 if(sessionStorage.getItem("loggedIn")!=="true"){
     location.href="login.html";
 }
 
-document.getElementById("username").textContent=
-sessionStorage.getItem("username");
+const username=sessionStorage.getItem("username");
+
+document.getElementById("username").textContent=username;
+document.getElementById("userName").textContent=username;
 
 document.getElementById("today").textContent=
 new Date().toLocaleString("ja-JP");
+
+async function loadDashboard(){
+
+    document.getElementById("systemStatus").textContent="正常";
+
+    // ユーザー数
+    const {count:userCount}=await window.db
+    .from("users")
+    .select("*",{count:"exact",head:true});
+
+    document.getElementById("userCount").textContent=userCount+" 人";
+
+    // ログイン履歴件数
+    const {count:logCount}=await window.db
+    .from("login_logs")
+    .select("*",{count:"exact",head:true});
+
+    document.getElementById("logCount").textContent=logCount+" 件";
+
+    // 最新ログイン
+    const {data:lastLog}=await window.db
+    .from("login_logs")
+    .select("login_time")
+    .order("login_time",{ascending:false})
+    .limit(1);
+
+    if(lastLog && lastLog.length>0){
+        document.getElementById("lastLogin").textContent=
+        new Date(lastLog[0].login_time).toLocaleString("ja-JP");
+    }else{
+        document.getElementById("lastLogin").textContent="なし";
+    }
+
+}
+
+loadDashboard();
 
 function logout(){
 
