@@ -1,1 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PatternLock Secure</title>
 
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+}
+
+header{
+    height:70px;
+    background:#2563eb;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
+}
+
+.container{
+    display:flex;
+    min-height:calc(100vh - 70px);
+}
+
+aside{
+    width:240px;
+    background:#1e293b;
+    color:white;
+    padding:25px;
+}
+
+aside h2{
+    margin-bottom:20px;
+}
+
+aside a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+aside a:hover{
+    background:#334155;
+}
+
+main{
+    flex:1;
+    padding:40px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h3{
+    color:#2563eb;
+    margin-bottom:10px;
+}
+
+.logout{
+    background:#dc2626;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+
+<h1>🔒 PatternLock Secure</h1>
+
+<div>
+<span id="username"></span>
+
+<button class="logout" onclick="logout()">
+ログアウト
+</button>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<aside>
+
+<h2>メニュー</h2>
+
+<a href="#">🏠 ダッシュボード</a>
+<a href="change-pattern.html">🔑 パターン変更</a>
+<a href="admin.html">⚙ 管理画面</a>
+
+</aside>
+
+<main>
+
+<h2>ようこそ！</h2>
+
+<p style="margin:15px 0 30px;">
+ログインに成功しました。
+</p>
+
+<div class="cards">
+
+<div class="card">
+<h3>👤 ユーザー</h3>
+<p>admin</p>
+</div>
+
+<div class="card">
+<h3>🔒 セキュリティ</h3>
+<p>正常</p>
+</div>
+
+<div class="card">
+<h3>📅 今日</h3>
+<p id="today"></p>
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+<script>
+
+if(sessionStorage.getItem("loggedIn")!=="true"){
+    location.href="login.html";
+}
+
+document.getElementById("username").textContent=
+sessionStorage.getItem("username");
+
+document.getElementById("today").textContent=
+new Date().toLocaleString("ja-JP");
+
+function logout(){
+
+    sessionStorage.clear();
+
+    location.href="login.html";
+
+}
+
+</script>
+
+</body>
+</html>
