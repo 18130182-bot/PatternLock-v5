@@ -48,18 +48,20 @@ if (data.pattern_hash === patternString) {
     message.textContent = "ログイン成功";
 
     // ログイン履歴を保存
-    const { error: logError } = await window.db
-        .from("login_logs")
-        .insert([
-            {
-                username: data.username,
-                status: "success"
-            }
-        ]);
+const { error: logError } = await window.db
+    .from("login_logs")
+    .insert([
+        {
+            username: data.username,
+            status: "success"
+        }
+    ]);
 
-    if (logError) {
-        console.error("ログ保存エラー:", logError);
-    }
+console.log("ログ保存結果:", logError);
+
+if (logError) {
+    alert(JSON.stringify(logError));
+}
 
     // ログイン状態を保存
     sessionStorage.setItem("loggedIn", "true");
