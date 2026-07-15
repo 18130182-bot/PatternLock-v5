@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student PatternLock</title>
+
+<link rel="stylesheet" href="css/login.css">
+
+</head>
+<body>
+
+<div class="background"></div>
+
+<div class="login-card">
+
+<div class="logo">
+🎓
+</div>
+
+<h1>Student Login</h1>
+
+<p class="subtitle">
+パターンを入力してください
+</p>
+
+<div id="patternLock" class="pattern-lock">
+
+<svg id="patternCanvas"></svg>
+
+<div class="dot" data-id="1"></div>
+<div class="dot" data-id="2"></div>
+<div class="dot" data-id="3"></div>
+
+<div class="dot" data-id="4"></div>
+<div class="dot" data-id="5"></div>
+<div class="dot" data-id="6"></div>
+
+<div class="dot" data-id="7"></div>
+<div class="dot" data-id="8"></div>
+<div class="dot" data-id="9"></div>
+
+</div>
+
+<p id="message" class="message"></p>
+
+<button id="loginButton">
+認証
+</button>
+
+<button id="resetButton" class="secondary">
+リセット
+</button>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/pattern/core.js"></script>
+<script src="js/pattern/draw.js"></script>
+<script src="js/pattern/ui.js"></script>
+<script src="js/pattern/events.js"></script>
+
+<!-- 生徒用認証 -->
+<script src="js/student-auth.js"></script>
+
+</body>
+</html>
