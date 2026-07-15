@@ -105,6 +105,40 @@ async function loadDashboard() {
 }
 
 loadDashboard();
+// ======================================
+// リアルタイム通知
+// ======================================
+
+window.db
+    .channel("login_logs_channel")
+    .on(
+        "postgres_changes",
+        {
+            event: "INSERT",
+            schema: "public",
+            table: "login_logs"
+        },
+        (payload) => {
+
+            const notice = document.getElementById("latestNotice");
+
+            if (!notice) return;
+
+            const log = payload.new;
+
+            const icon =
+                log.status === "success"
+                    ? "🟢"
+                    : "🔴";
+
+            notice.innerHTML = `
+                ${icon} ${log.username} が ${log.status}<br>
+                ${new Date(log.login_time).toLocaleString("ja-JP")}
+            `;
+
+        }
+    )
+    .subscribe();
 
 // ログアウト
 function logout() {
