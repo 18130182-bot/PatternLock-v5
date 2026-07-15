@@ -1,7 +1,6 @@
 // ======================================
-// PatternLock-v5
+// PatternLock Secure v8
 // users.js
-// ユーザー管理
 // ======================================
 
 // ログインチェック
@@ -10,34 +9,19 @@ if (sessionStorage.getItem("loggedIn") !== "true") {
 }
 
 const table = document.getElementById("userTable");
-const message = document.getElementById("message");
 
-// ----------------------
-// ユーザー一覧表示
-// ----------------------
+// ------------------------
+// ユーザー一覧
+// ------------------------
 async function loadUsers() {
 
     const { data, error } = await window.db
         .from("users")
-        .select("id, username, pattern_hash")
+        .select("*")
         .order("username");
 
     if (error) {
         console.error(error);
-        table.innerHTML = `
-            <tr>
-                <td colspan="3">読み込み失敗</td>
-            </tr>
-        `;
-        return;
-    }
-
-    if (!data || data.length === 0) {
-        table.innerHTML = `
-            <tr>
-                <td colspan="3">ユーザーがありません</td>
-            </tr>
-        `;
         return;
     }
 
@@ -49,10 +33,19 @@ async function loadUsers() {
 
         tr.innerHTML = `
             <td>${user.username}</td>
-            <td>${user.pattern_hash}</td>
+            <td>${user.role}</td>
+            <td>${user.redirect_url ?? "-"}</td>
             <td>
-                <button class="danger" onclick="deleteUser('${user.id}')">
-                    削除
+                <button
+                onclick="deleteUser('${user.username}')"
+                style="
+                    background:#dc2626;
+                    color:white;
+                    border:none;
+                    padding:8px 12px;
+                    border-radius:8px;
+                    cursor:pointer;">
+                    🗑 削除
                 </button>
             </td>
         `;
@@ -63,17 +56,18 @@ async function loadUsers() {
 
 }
 
-// ----------------------
+// ------------------------
 // ユーザー追加
-// ----------------------
-document.getElementById("addUser").addEventListener("click", async () => {
+// ------------------------
+document.getElementById("addUserButton").addEventListener("click", async () => {
 
     const username = document.getElementById("newUsername").value.trim();
     const pattern = document.getElementById("newPattern").value.trim();
+    const redirect = document.getElementById("newRedirect").value.trim();
+    const role = document.getElementById("newRole").value;
 
     if (!username || !pattern) {
-        message.style.color = "red";
-        message.textContent = "入力してください";
+        alert("ユーザー名とパターンを入力してください");
         return;
     }
 
@@ -82,38 +76,47 @@ document.getElementById("addUser").addEventListener("click", async () => {
         .insert([
             {
                 username: username,
-                pattern_hash: pattern
+                pattern_hash: pattern,
+                redirect_url: redirect,
+                role: role
             }
         ]);
 
     if (error) {
         console.error(error);
-        message.style.color = "red";
-        message.textContent = "追加失敗";
+        alert("追加できませんでした");
         return;
     }
 
-    message.style.color = "green";
-    message.textContent = "追加しました";
+    alert("ユーザーを追加しました");
 
     document.getElementById("newUsername").value = "";
     document.getElementById("newPattern").value = "";
+    document.getElementById("newRedirect").value = "";
+    document.getElementById("newRole").value = "student";
 
     loadUsers();
 
 });
 
-// ----------------------
+// ------------------------
 // ユーザー削除
-// ----------------------
-async function deleteUser(id) {
+// ------------------------
+async function deleteUser(username) {
 
-    if (!confirm("削除しますか？")) return;
+    if (username === "admin") {
+        alert("adminは削除できません");
+        return;
+    }
+
+    if (!confirm(`${username} を削除しますか？`)) {
+        return;
+    }
 
     const { error } = await window.db
         .from("users")
         .delete()
-        .eq("id", id);
+        .eq("username", username);
 
     if (error) {
         console.error(error);
@@ -125,5 +128,5 @@ async function deleteUser(id) {
 
 }
 
-// 初回読み込み
+// 初回読込
 loadUsers();
