@@ -11,6 +11,10 @@ const svg = document.getElementById("lineCanvas");
 
 let pattern = [];
 
+let confirmPattern = [];
+
+let step = 1;
+
 let drawing = false;
 
 
@@ -21,12 +25,11 @@ function getCenter(dot){
 
     const parent = svg.getBoundingClientRect();
 
-
     return {
 
-        x: rect.left - parent.left + rect.width / 2,
+        x:rect.left-parent.left+rect.width/2,
 
-        y: rect.top - parent.top + rect.height / 2
+        y:rect.top-parent.top+rect.height/2
 
     };
 
@@ -34,9 +37,7 @@ function getCenter(dot){
 
 
 
-
 function drawLine(){
-
 
     svg.innerHTML="";
 
@@ -44,15 +45,13 @@ function drawLine(){
     for(let i=0;i<pattern.length-1;i++){
 
 
-        const a =
-        document.querySelector(
-            `.dot[data-id="${pattern[i]}"]`
+        const a=document.querySelector(
+        `.dot[data-id="${pattern[i]}"]`
         );
 
 
-        const b =
-        document.querySelector(
-            `.dot[data-id="${pattern[i+1]}"]`
+        const b=document.querySelector(
+        `.dot[data-id="${pattern[i+1]}"]`
         );
 
 
@@ -62,10 +61,9 @@ function drawLine(){
 
 
 
-        const line =
-        document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "line"
+        const line=document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "line"
         );
 
 
@@ -79,20 +77,20 @@ function drawLine(){
 
 
         line.setAttribute(
-            "stroke",
-            "#4285f4"
+        "stroke",
+        "#4285f4"
         );
 
 
         line.setAttribute(
-            "stroke-width",
-            "8"
+        "stroke-width",
+        "8"
         );
 
 
         line.setAttribute(
-            "stroke-linecap",
-            "round"
+        "stroke-linecap",
+        "round"
         );
 
 
@@ -111,9 +109,7 @@ function addDot(dot){
     const id=dot.dataset.id;
 
 
-    if(pattern.includes(id)){
-        return;
-    }
+    if(pattern.includes(id)) return;
 
 
     pattern.push(id);
@@ -128,49 +124,40 @@ function addDot(dot){
 
 
 
-
-
 dots.forEach(dot=>{
 
 
-    dot.addEventListener(
-        "mousedown",
-        ()=>{
+    dot.addEventListener("mousedown",()=>{
 
-            drawing=true;
+        drawing=true;
 
-            addDot(dot);
+        addDot(dot);
 
-        }
-    );
+    });
 
 
-    dot.addEventListener(
-        "mouseover",
-        ()=>{
 
-            if(drawing){
+    dot.addEventListener("mouseover",()=>{
 
-                addDot(dot);
-
-            }
-
-        }
-    );
-
-
-    dot.addEventListener(
-        "touchstart",
-        e=>{
-
-            e.preventDefault();
-
-            drawing=true;
+        if(drawing){
 
             addDot(dot);
 
         }
-    );
+
+    });
+
+
+
+    dot.addEventListener("touchstart",(e)=>{
+
+        e.preventDefault();
+
+        drawing=true;
+
+        addDot(dot);
+
+    });
 
 
 });
@@ -188,12 +175,9 @@ document.addEventListener(
 
 
 
-
-resetButton.onclick=()=>{
-
+function clearPattern(){
 
     pattern=[];
-
 
     dots.forEach(dot=>{
 
@@ -201,8 +185,18 @@ resetButton.onclick=()=>{
 
     });
 
-
     svg.innerHTML="";
+
+}
+
+
+
+
+
+resetButton.onclick=()=>{
+
+
+    clearPattern();
 
 
     message.textContent=
@@ -220,9 +214,29 @@ saveButton.onclick=()=>{
 
     if(pattern.length<3){
 
-
         message.textContent=
         "3つ以上選択してください";
+
+        return;
+
+    }
+
+
+
+    if(step===1){
+
+
+        confirmPattern=[...pattern];
+
+
+        step=2;
+
+
+        clearPattern();
+
+
+        message.textContent=
+        "確認のためもう一度入力してください";
 
 
         return;
@@ -231,18 +245,52 @@ saveButton.onclick=()=>{
 
 
 
-    localStorage.setItem(
+
+    if(step===2){
+
+
+
+        if(
+        JSON.stringify(pattern)
+        !==
+        JSON.stringify(confirmPattern)
+        ){
+
+
+            message.textContent=
+            "パターンが一致しません";
+
+
+            clearPattern();
+
+
+            step=1;
+
+
+            return;
+
+        }
+
+
+
+        localStorage.setItem(
 
         "patternLockPassword",
 
         JSON.stringify(pattern)
 
-    );
+        );
 
 
 
-    message.textContent=
-    "パターンを変更しました";
+        message.textContent=
+        "パターン変更完了";
+
+
+        clearPattern();
+
+
+    }
 
 
 };
