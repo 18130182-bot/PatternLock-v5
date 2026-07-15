@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>設定</title>
+
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+<header>
+
+<h1>⚙️ 設定</h1>
+
+<div class="profile">
+
+<button id="themeButton" class="toggle-theme">
+🌙
+</button>
+
+<div class="avatar">A</div>
+
+<div>
+<div id="username">admin</div>
+<small>Administrator</small>
+</div>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<aside>
+
+<h2>MENU</h2>
+
+<a href="home.html">🏠 <span>ホーム</span></a>
+<a href="admin.html">⚙ <span>管理画面</span></a>
+<a href="users.html">👥 <span>ユーザー管理</span></a>
+<a href="logs.html">📜 <span>ログイン履歴</span></a>
+<a href="change-pattern.html">🔑 <span>パターン変更</span></a>
+<a href="settings.html">⚙ <span>設定</span></a>
+
+</aside>
+
+<main>
+
+<div class="card">
+
+<h2>👤 アカウント</h2>
+
+<p><strong>ユーザー名：</strong> <span id="accountName"></span></p>
+
+<br>
+
+<a href="change-pattern.html" class="button">
+🔑 パターンを変更
+</a>
+
+</div>
+
+<br>
+
+<div class="card">
+
+<h2>🎨 表示設定</h2>
+
+<p>ダークモードを切り替えます。</p>
+
+<br>
+
+<button id="toggleTheme" class="button">
+🌙 ダークモード切替
+</button>
+
+</div>
+
+<br>
+
+<div class="card">
+
+<h2>🔒 セキュリティ</h2>
+
+<p>現在のセッションからログアウトします。</p>
+
+<br>
+
+<button id="logoutButton" class="button button-danger">
+🚪 ログアウト
+</button>
+
+</div>
+
+<br>
+
+<div class="card">
+
+<h2>ℹ️ システム情報</h2>
+
+<p><strong>システム：</strong> PatternLock Secure v7</p>
+<p><strong>データベース：</strong> Supabase</p>
+<p><strong>公開：</strong> GitHub Pages</p>
+
+</div>
+
+</main>
+
+</div>
+
+<script src="js/settings.js"></script>
+
+</body>
+</html>
