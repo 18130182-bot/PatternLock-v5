@@ -1,11 +1,13 @@
 body{
+
     margin:0;
-    padding:0;
 
     min-height:100vh;
 
     display:flex;
+
     justify-content:center;
+
     align-items:center;
 
     background:#f4f7fb;
@@ -14,21 +16,23 @@ body{
     "Segoe UI",
     "Noto Sans JP",
     sans-serif;
+
 }
+
 
 
 .container{
 
     width:360px;
 
-    background:white;
-
     padding:30px;
+
+    background:white;
 
     border-radius:20px;
 
     box-shadow:
-    0 10px 30px rgba(0,0,0,0.1);
+    0 10px 30px rgba(0,0,0,0.12);
 
     text-align:center;
 
@@ -38,9 +42,9 @@ body{
 
 h1{
 
-    margin-bottom:20px;
-
     font-size:26px;
+
+    margin-bottom:15px;
 
 }
 
@@ -50,21 +54,43 @@ h1{
 
     color:#555;
 
-    margin-bottom:25px;
+    margin-bottom:20px;
 
 }
 
 
 
-/* パターン部分 */
+/* パターンエリア */
 
 .pattern-area{
 
-    display:flex;
+    position:relative;
 
-    justify-content:center;
+    width:270px;
 
-    margin-bottom:25px;
+    height:270px;
+
+    margin:0 auto 25px;
+
+}
+
+
+
+#lineCanvas{
+
+    position:absolute;
+
+    width:270px;
+
+    height:270px;
+
+    top:0;
+
+    left:0;
+
+    z-index:1;
+
+    pointer-events:none;
 
 }
 
@@ -72,19 +98,25 @@ h1{
 
 .grid{
 
-    width:260px;
+    position:absolute;
 
-    height:260px;
+    top:0;
+
+    left:0;
+
+    width:270px;
+
+    height:270px;
+
 
     display:grid;
 
     grid-template-columns:repeat(3,1fr);
 
-    gap:30px;
+    grid-template-rows:repeat(3,1fr);
 
-    align-items:center;
 
-    justify-items:center;
+    z-index:2;
 
 }
 
@@ -96,15 +128,21 @@ h1{
 
     height:45px;
 
+
+    margin:auto;
+
+
     border-radius:50%;
+
 
     background:#ddd;
 
-    border:3px solid #bbb;
+
+    border:3px solid #aaa;
+
 
     transition:.2s;
 
-    cursor:pointer;
 
 }
 
@@ -112,17 +150,21 @@ h1{
 
 .dot.active{
 
+
     background:#4285f4;
+
 
     border-color:#4285f4;
 
+
     transform:scale(1.15);
+
 
 }
 
 
 
-/* ボタン */
+
 
 button{
 
@@ -130,15 +172,21 @@ button{
 
     padding:12px;
 
+
     margin:5px;
+
 
     border:none;
 
+
     border-radius:12px;
+
 
     font-size:15px;
 
+
     cursor:pointer;
+
 
 }
 
@@ -176,6 +224,31 @@ a{
 
     text-decoration:none;
 
-    font-size:14px;
+}
+
+
+
+@media screen and (max-width:600px){
+
+
+    .container{
+
+        width:85%;
+
+        padding:25px;
+
+    }
+
+
+    .pattern-area,
+    .grid,
+    #lineCanvas{
+
+        width:240px;
+
+        height:240px;
+
+    }
+
 
 }
