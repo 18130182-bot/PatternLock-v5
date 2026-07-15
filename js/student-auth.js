@@ -73,12 +73,31 @@ async function authenticate(pattern) {
 
         if (error || !data) {
 
-            message.style.color = "#dc2626";
-            message.textContent = "パターンが違います";
+           failedCount++;
 
-            clearPattern();
+localStorage.setItem("failedCount", failedCount);
 
-            return;
+if (failedCount >= 5) {
+
+    const until = Date.now() + 30000;
+
+    localStorage.setItem("lockUntil", until);
+
+    message.style.color = "#dc2626";
+    message.textContent = "🔒 30秒間ロックされました";
+
+    document.getElementById("loginButton").disabled = true;
+
+    return;
+}
+
+message.style.color = "#dc2626";
+message.textContent =
+    `パターンが違います（${failedCount}/5）`;
+
+clearPattern();
+
+return;
         }
 
         // ログ保存
