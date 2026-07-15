@@ -1,4 +1,56 @@
 // ======================================
+// ログインロック設定
+// ======================================
+
+let failedCount = Number(localStorage.getItem("failedCount")) || 0;
+let lockUntil = Number(localStorage.getItem("lockUntil")) || 0;
+
+// ロック中か確認
+if (Date.now() < lockUntil) {
+
+    const remain = Math.ceil((lockUntil - Date.now()) / 1000);
+
+    message.style.color = "#dc2626";
+    message.textContent =
+        `🔒 ロック中です (${remain}秒)`;
+
+    const loginButton = document.getElementById("loginButton");
+
+    if (loginButton) {
+        loginButton.disabled = true;
+    }
+
+    const timer = setInterval(() => {
+
+        const left = Math.ceil((lockUntil - Date.now()) / 1000);
+
+        if (left <= 0) {
+
+            clearInterval(timer);
+
+            localStorage.removeItem("failedCount");
+            localStorage.removeItem("lockUntil");
+
+            if (loginButton) {
+                loginButton.disabled = false;
+            }
+
+            message.style.color = "#16a34a";
+            message.textContent =
+                "もう一度ログインできます";
+
+        } else {
+
+            message.textContent =
+                `🔒 ロック中です (${left}秒)`;
+
+        }
+
+    }, 1000);
+
+}
+
+// ======================================
 // PatternLock Secure v8
 // student-auth.js
 // ======================================
