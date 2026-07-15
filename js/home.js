@@ -11,103 +11,94 @@ if (sessionStorage.getItem("loggedIn") !== "true") {
 const username = sessionStorage.getItem("username") || "admin";
 
 // ユーザー名表示
-const username1 = document.getElementById("username");
-const username2 = document.getElementById("userNameCard");
+document.getElementById("username").textContent = username;
+document.getElementById("userNameCard").textContent = username;
 
-if (username1) username1.textContent = username;
-if (username2) username2.textContent = username;
-
-// -------------------------
 // ダークモード
-// -------------------------
 const themeButton = document.getElementById("themeButton");
 
-if (themeButton) {
-
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark");
-        themeButton.textContent = "☀";
-    }
-
-    themeButton.onclick = () => {
-
-        document.body.classList.toggle("dark");
-
-        if (document.body.classList.contains("dark")) {
-            localStorage.setItem("theme", "dark");
-            themeButton.textContent = "☀";
-        } else {
-            localStorage.setItem("theme", "light");
-            themeButton.textContent = "🌙";
-        }
-
-    };
-
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+    themeButton.textContent = "☀";
 }
 
-// -------------------------
-// ダッシュボード読込
-// -------------------------
+themeButton.onclick = () => {
+
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+        themeButton.textContent = "☀";
+    } else {
+        localStorage.setItem("theme", "light");
+        themeButton.textContent = "🌙";
+    }
+
+};
+
+// ダッシュボード情報取得
 async function loadDashboard() {
 
     try {
 
-        // ログ件数
+        // ログ総数
         const { count: logCount } = await window.db
             .from("login_logs")
-            .select("*", {
-                count: "exact",
-                head: true
-            });
+            .select("*", { count: "exact", head: true });
 
-        document.getElementById("logCount").textContent = logCount;
+        document.getElementById("logCount").textContent = logCount ?? 0;
 
-        // 成功件数
+        // 成功数
         const { count: successCount } = await window.db
             .from("login_logs")
-            .select("*", {
-                count: "exact",
-                head: true
-            })
+            .select("*", { count: "exact", head: true })
             .eq("status", "success");
 
-        // 失敗件数
+        // 失敗数
         const { count: failedCount } = await window.db
             .from("login_logs")
-            .select("*", {
-                count: "exact",
-                head: true
-            })
+            .select("*", { count: "exact", head: true })
             .eq("status", "failed");
 
-        const total = successCount + failedCount;
+        const success = successCount ?? 0;
+        const failed = failedCount ?? 0;
+        const total = success + failed;
 
-        const rate =
-            total === 0
+        const rate = total === 0
             ? 0
-            : Math.round(successCount / total * 100);
+            : Math.round(success / total * 100);
 
-        document.getElementById("successRate").textContent =
-            rate + "%";
+        document.getElementById("successRate").textContent = rate + "%";
 
-        // 今日の失敗
-        const today = new Date().toISOString().slice(0,10);
+        // 今日の失敗件数
+        const today = new Date().toISOString().split("T")[0];
 
         const { count: failedToday } = await window.db
             .from("login_logs")
-            .select("*", {
-                count: "exact",
-                head: true
-            })
-            .eq("status","failed")
+            .select("*", { count: "exact", head: true })
+            .eq("status", "failed")
             .gte("login_time", today);
 
         document.getElementById("failedToday").textContent =
-            failedToday;
+            failedToday ?? 0;
 
-    } catch(e){
+        // 最新ログイン通知
+        const { data: latest } = await window.db
+            .from("login_logs")
+            .select("*")
+            .order("login_time", { ascending: false })
+            .limit(1);
 
-        console.error(e);
+        const notice = document.getElementById("latestNotice");
+
+        if (notice && latest && latest.length > 0) {
+            notice.innerHTML =
+                `👤 ${latest[0].username} が ${latest[0].status} (${latest[0].login_time})`;
+        }
+
+    } catch (e) {
+
+        console.error("Dashboard Error:", e);
 
     }
 
@@ -115,10 +106,8 @@ async function loadDashboard() {
 
 loadDashboard();
 
-// -------------------------
 // ログアウト
-// -------------------------
-function logout(){
+function logout() {
 
     sessionStorage.clear();
 
