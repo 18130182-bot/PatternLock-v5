@@ -17,11 +17,13 @@ async function loadUsers() {
 
     const { data, error } = await window.db
         .from("users")
-        .select("*")
+        .select("username, role, redirect_url")
         .order("username");
 
     if (error) {
         console.error(error);
+        table.innerHTML =
+            "<tr><td colspan='4'>読み込み失敗</td></tr>";
         return;
     }
 
@@ -36,33 +38,16 @@ async function loadUsers() {
             <td>${user.role}</td>
             <td>${user.redirect_url ?? "-"}</td>
             <td>
+                <button class="editButton"
+                    onclick="editUser('${user.username}')">
+                    ✏️ 編集
+                </button>
 
-<button
-onclick="editUser('${user.username}')"
-style="
-background:#2563eb;
-color:white;
-border:none;
-padding:8px 12px;
-border-radius:8px;
-cursor:pointer;
-margin-right:6px;">
-✏️ 編集
-</button>
-
-<button
-onclick="deleteUser('${user.username}')"
-style="
-background:#dc2626;
-color:white;
-border:none;
-padding:8px 12px;
-border-radius:8px;
-cursor:pointer;">
-🗑 削除
-</button>
-
-</td>
+                <button class="deleteButton"
+                    onclick="deleteUser('${user.username}')">
+                    🗑 削除
+                </button>
+            </td>
         `;
 
         table.appendChild(tr);
@@ -76,10 +61,17 @@ cursor:pointer;">
 // ------------------------
 document.getElementById("addUserButton").addEventListener("click", async () => {
 
-    const username = document.getElementById("newUsername").value.trim();
-    const pattern = document.getElementById("newPattern").value.trim();
-    const redirect = document.getElementById("newRedirect").value.trim();
-    const role = document.getElementById("newRole").value;
+    const username =
+        document.getElementById("newUsername").value.trim();
+
+    const pattern =
+        document.getElementById("newPattern").value.trim();
+
+    const redirect =
+        document.getElementById("newRedirect").value.trim();
+
+    const role =
+        document.getElementById("newRole").value;
 
     if (!username || !pattern) {
         alert("ユーザー名とパターンを入力してください");
@@ -88,14 +80,12 @@ document.getElementById("addUserButton").addEventListener("click", async () => {
 
     const { error } = await window.db
         .from("users")
-        .insert([
-            {
-                username: username,
-                pattern_hash: pattern,
-                redirect_url: redirect,
-                role: role
-            }
-        ]);
+        .insert([{
+            username: username,
+            pattern_hash: pattern,
+            redirect_url: redirect,
+            role: role
+        }]);
 
     if (error) {
         console.error(error);
@@ -115,7 +105,59 @@ document.getElementById("addUserButton").addEventListener("click", async () => {
 });
 
 // ------------------------
-// ユーザー削除
+// 編集
+// ------------------------
+async function editUser(username) {
+
+    const { data, error } = await window.db
+        .from("users")
+        .select("*")
+        .eq("username", username)
+        .single();
+
+    if (error) {
+        alert("取得できませんでした");
+        return;
+    }
+
+    const pattern =
+        prompt("パターン", data.pattern_hash);
+
+    if (pattern === null) return;
+
+    const redirect =
+        prompt("移動先URL", data.redirect_url ?? "");
+
+    if (redirect === null) return;
+
+    const role =
+        prompt("権限(admin/student)", data.role);
+
+    if (role === null) return;
+
+    const { error:updateError } = await window.db
+        .from("users")
+        .update({
+            pattern_hash: pattern,
+            redirect_url: redirect,
+            role: role
+        })
+        .eq("username", username);
+
+    if (updateError) {
+        console.error(updateError);
+        alert("更新できませんでした");
+        return;
+    }
+
+    alert("更新しました");
+
+    loadUsers();
+
+}
+
+// ------------------------
+// 削除
 // ------------------------
 async function deleteUser(username) {
 
@@ -143,64 +185,5 @@ async function deleteUser(username) {
 
 }
 
-// 初回読込
+// 初回読み込み
 loadUsers();
-
-// ======================================
-// ユーザー編集
-// ======================================
-
-async function editUser(username){
-
-    const { data, error } = await window.db
-        .from("users")
-        .select("*")
-        .eq("username", username)
-        .single();
-
-    if(error){
-        alert("ユーザーを取得できません");
-        return;
-    }
-
-    const newPattern = prompt(
-        "新しいパターン",
-        data.pattern_hash
-    );
-
-    if(newPattern === null) return;
-
-    const newUrl = prompt(
-        "新しい移動先URL",
-        data.redirect_url ?? ""
-    );
-
-    if(newUrl === null) return;
-
-    const newRole = prompt(
-        "権限(admin / student)",
-        data.role
-    );
-
-    if(newRole === null) return;
-
-    const { error:updateError } = await window.db
-        .from("users")
-        .update({
-            pattern_hash:newPattern,
-            redirect_url:newUrl,
-            role:newRole
-        })
-        .eq("username", username);
-
-    if(updateError){
-        console.error(updateError);
-        alert("更新できませんでした");
-        return;
-    }
-
-    alert("更新しました");
-
-    loadUsers();
-
-}
