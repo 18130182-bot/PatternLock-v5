@@ -1,121 +1,158 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理者ダッシュボード</title>
 
-<title>管理者ダッシュボード | PatternLock</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,sans-serif;
+}
 
-<link rel="stylesheet" href="css/dashboard.css">
+body{
+    background:#f4f7fb;
+}
+
+header{
+    background:#2563eb;
+    color:#fff;
+    padding:20px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.container{
+    max-width:1200px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#fff;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.card h3{
+    color:#2563eb;
+    margin-bottom:10px;
+}
+
+.card p{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.actions{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.action{
+    display:block;
+    background:#2563eb;
+    color:white;
+    text-decoration:none;
+    text-align:center;
+    padding:20px;
+    border-radius:14px;
+    font-size:18px;
+    transition:.2s;
+}
+
+.action:hover{
+    background:#1d4ed8;
+}
+
+canvas{
+    background:white;
+    margin-top:30px;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+</style>
 
 </head>
-
-
 <body>
 
+<header>
+
+<h1>🔒 PatternLock Secure Admin</h1>
+
+<div id="adminName"></div>
+
+</header>
 
 <div class="container">
 
+<div class="cards">
 
-<h1>
-管理者ダッシュボード
-</h1>
+<div class="card">
+<h3>👥 ユーザー数</h3>
+<p id="userCount">...</p>
+</div>
 
+<div class="card">
+<h3>📜 ログ件数</h3>
+<p id="logCount">...</p>
+</div>
 
+<div class="card">
+<h3>🟢 成功率</h3>
+<p id="successRate">...</p>
+</div>
 
-<div class="menu">
-
-
-<a href="change-pattern.html" class="admin-button">
-パターン変更
-</a>
-
-
-<a href="history.html" class="admin-button">
-ログイン履歴
-</a>
-
-
-<a href="login.html" class="admin-button">
-ログイン画面へ戻る
-</a>
-
-
+<div class="card">
+<h3>🔴 今日の失敗</h3>
+<p id="failedToday">...</p>
+</div>
 
 </div>
 
+<canvas id="adminChart" height="120"></canvas>
 
+<div class="actions">
 
+<a class="action" href="users.html">
+👥 ユーザー管理
+</a>
 
-<h2>
-ログイン情報
-</h2>
+<a class="action" href="logs.html">
+📜 ログイン履歴
+</a>
 
+<a class="action" href="change-pattern.html">
+🔑 パターン変更
+</a>
 
-
-<table>
-
-
-<thead>
-
-<tr>
-
-<th>
-日時
-</th>
-
-<th>
-ユーザー
-</th>
-
-<th>
-結果
-</th>
-
-</tr>
-
-</thead>
-
-
-
-<tbody id="historyList">
-
-
-<tr>
-
-<td colspan="3">
-履歴データなし
-</td>
-
-</tr>
-
-
-</tbody>
-
-
-</table>
-
-
+<a class="action" href="home.html">
+🏠 ホーム
+</a>
 
 </div>
 
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script src="js/admin-auth.js"></script>
-
-<script>
-
-setAdminLogin();
-
-</script>
-
-
+<script src="js/supabase.js"></script>
 <script src="js/admin.js"></script>
 
-
 </body>
-
 </html>
