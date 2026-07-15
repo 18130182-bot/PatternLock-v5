@@ -99,6 +99,44 @@ button{
 
 <header>
 <h2>👥 ユーザー管理</h2>
+    <div class="card" style="margin-bottom:25px;">
+
+<h2>➕ ユーザー追加</h2>
+
+<input
+id="newUsername"
+type="text"
+placeholder="ユーザー名"
+style="width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:8px;">
+
+<input
+id="newPattern"
+type="text"
+placeholder="パターン (例: 1-2-5-8)"
+style="width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:8px;">
+
+<input
+id="newRedirect"
+type="url"
+placeholder="移動先URL"
+style="width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:8px;">
+
+<select
+id="newRole"
+style="width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:8px;">
+
+<option value="student">🎓 student</option>
+<option value="admin">👑 admin</option>
+
+</select>
+
+<button
+id="addUserButton"
+class="button">
+➕ ユーザー追加
+</button>
+
+</div>
 </header>
 
 <div class="container">
