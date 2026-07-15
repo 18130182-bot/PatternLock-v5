@@ -39,6 +39,65 @@ tr:hover{
 <div class="container">
 
 <h1>📜 ログイン履歴</h1>
+    <div style="
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin:20px 0;
+">
+
+<input
+id="searchUser"
+type="text"
+placeholder="🔍 ユーザー名で検索"
+style="
+padding:10px;
+border:1px solid #ccc;
+border-radius:8px;
+width:220px;
+">
+
+<select
+id="searchStatus"
+style="
+padding:10px;
+border:1px solid #ccc;
+border-radius:8px;
+">
+
+<option value="">すべて</option>
+<option value="success">🟢 success</option>
+<option value="failed">🔴 failed</option>
+
+</select>
+
+<button
+id="searchButton"
+style="
+padding:10px 20px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+">
+🔍 検索
+</button>
+
+<button
+id="resetSearch"
+style="
+padding:10px 20px;
+background:#64748b;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+">
+↺ リセット
+</button>
+
+</div>
     <button id="downloadCsv" style="
 padding:10px 18px;
 background:#2563eb;
