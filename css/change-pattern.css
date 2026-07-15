@@ -1,0 +1,181 @@
+body{
+    margin:0;
+    padding:0;
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#f4f7fb;
+
+    font-family:
+    "Segoe UI",
+    "Noto Sans JP",
+    sans-serif;
+}
+
+
+.container{
+
+    width:360px;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.1);
+
+    text-align:center;
+
+}
+
+
+
+h1{
+
+    margin-bottom:20px;
+
+    font-size:26px;
+
+}
+
+
+
+#message{
+
+    color:#555;
+
+    margin-bottom:25px;
+
+}
+
+
+
+/* パターン部分 */
+
+.pattern-area{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.grid{
+
+    width:260px;
+
+    height:260px;
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:30px;
+
+    align-items:center;
+
+    justify-items:center;
+
+}
+
+
+
+.dot{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    background:#ddd;
+
+    border:3px solid #bbb;
+
+    transition:.2s;
+
+    cursor:pointer;
+
+}
+
+
+
+.dot.active{
+
+    background:#4285f4;
+
+    border-color:#4285f4;
+
+    transform:scale(1.15);
+
+}
+
+
+
+/* ボタン */
+
+button{
+
+    width:120px;
+
+    padding:12px;
+
+    margin:5px;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+}
+
+
+
+#saveButton{
+
+    background:#4285f4;
+
+    color:white;
+
+}
+
+
+
+#resetButton{
+
+    background:#eee;
+
+}
+
+
+
+button:hover{
+
+    opacity:.8;
+
+}
+
+
+
+a{
+
+    color:#4285f4;
+
+    text-decoration:none;
+
+    font-size:14px;
+
+}
