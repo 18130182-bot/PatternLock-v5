@@ -1,296 +1,123 @@
-const dots = [...document.querySelectorAll(".dot")];
-
+const dots = document.querySelectorAll(".dot");
 const message = document.getElementById("message");
-
 const saveButton = document.getElementById("saveButton");
-
 const resetButton = document.getElementById("resetButton");
 
-const svg = document.getElementById("lineCanvas");
-
-
 let pattern = [];
-
-let confirmPattern = [];
-
-let step = 1;
-
-let drawing = false;
+let isDrawing = false;
 
 
+// ドット取得
+dots.forEach(dot => {
 
-function getCenter(dot){
-
-    const rect = dot.getBoundingClientRect();
-
-    const parent = svg.getBoundingClientRect();
-
-    return {
-
-        x:rect.left-parent.left+rect.width/2,
-
-        y:rect.top-parent.top+rect.height/2
-
-    };
-
-}
+    dot.addEventListener("mousedown", () => {
+        isDrawing = true;
+        addDot(dot);
+    });
 
 
+    dot.addEventListener("mouseover", () => {
 
-function drawLine(){
+        if(isDrawing){
+            addDot(dot);
+        }
 
-    svg.innerHTML="";
-
-
-    for(let i=0;i<pattern.length-1;i++){
-
-
-        const a=document.querySelector(
-        `.dot[data-id="${pattern[i]}"]`
-        );
+    });
 
 
-        const b=document.querySelector(
-        `.dot[data-id="${pattern[i+1]}"]`
-        );
+    dot.addEventListener("mouseup", () => {
+        isDrawing = false;
+    });
 
 
-        const p1=getCenter(a);
+    // スマホ対応
+    dot.addEventListener("touchstart", (e)=>{
 
-        const p2=getCenter(b);
+        e.preventDefault();
 
+        isDrawing = true;
+        addDot(dot);
 
+    });
 
-        const line=document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "line"
-        );
-
-
-        line.setAttribute("x1",p1.x);
-
-        line.setAttribute("y1",p1.y);
-
-        line.setAttribute("x2",p2.x);
-
-        line.setAttribute("y2",p2.y);
+});
 
 
-        line.setAttribute(
-        "stroke",
-        "#4285f4"
-        );
+document.addEventListener("mouseup", ()=>{
 
+    isDrawing = false;
 
-        line.setAttribute(
-        "stroke-width",
-        "8"
-        );
-
-
-        line.setAttribute(
-        "stroke-linecap",
-        "round"
-        );
-
-
-        svg.appendChild(line);
-
-    }
-
-}
-
+});
 
 
 
 function addDot(dot){
 
+    const id = dot.dataset.id;
 
-    const id=dot.dataset.id;
 
-
-    if(pattern.includes(id)) return;
+    if(pattern.includes(id)){
+        return;
+    }
 
 
     pattern.push(id);
 
-
     dot.classList.add("active");
-
-
-    drawLine();
 
 }
 
 
 
-dots.forEach(dot=>{
+resetButton.addEventListener("click", ()=>{
 
-
-    dot.addEventListener("mousedown",()=>{
-
-        drawing=true;
-
-        addDot(dot);
-
-    });
-
-
-
-    dot.addEventListener("mouseover",()=>{
-
-        if(drawing){
-
-            addDot(dot);
-
-        }
-
-    });
-
-
-
-    dot.addEventListener("touchstart",(e)=>{
-
-        e.preventDefault();
-
-        drawing=true;
-
-        addDot(dot);
-
-    });
-
+    clearPattern();
 
 });
-
-
-
-document.addEventListener(
-"mouseup",
-()=>{
-
-    drawing=false;
-
-});
-
 
 
 
 function clearPattern(){
 
-    pattern=[];
+    pattern = [];
 
     dots.forEach(dot=>{
-
         dot.classList.remove("active");
-
     });
 
-    svg.innerHTML="";
+
+    message.textContent =
+    "新しいパターンを入力してください";
 
 }
 
 
 
 
+saveButton.addEventListener("click", ()=>{
 
-resetButton.onclick=()=>{
+
+    if(pattern.length < 3){
+
+        message.textContent =
+        "3つ以上のドットを選択してください";
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+        "patternLockPassword",
+        JSON.stringify(pattern)
+    );
+
+
+    message.textContent =
+    "パターンを変更しました";
 
 
     clearPattern();
 
 
-    message.textContent=
-    "新しいパターンを入力してください";
-
-
-};
-
-
-
-
-
-saveButton.onclick=()=>{
-
-
-    if(pattern.length<3){
-
-        message.textContent=
-        "3つ以上選択してください";
-
-        return;
-
-    }
-
-
-
-    if(step===1){
-
-
-        confirmPattern=[...pattern];
-
-
-        step=2;
-
-
-        clearPattern();
-
-
-        message.textContent=
-        "確認のためもう一度入力してください";
-
-
-        return;
-
-    }
-
-
-
-
-    if(step===2){
-
-
-
-        if(
-        JSON.stringify(pattern)
-        !==
-        JSON.stringify(confirmPattern)
-        ){
-
-
-            message.textContent=
-            "パターンが一致しません";
-
-
-            clearPattern();
-
-
-            step=1;
-
-
-            return;
-
-        }
-
-
-
-        localStorage.setItem(
-
-        "patternLockPassword",
-
-        JSON.stringify(pattern)
-
-        );
-
-
-
-        message.textContent=
-        "パターン変更完了";
-
-
-        clearPattern();
-
-
-    }
-
-
-};
+});
