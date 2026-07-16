@@ -125,6 +125,45 @@ margin-bottom:20px;
 🗑 すべて削除
 </button>
 
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:20px;
+flex-wrap:wrap;
+">
+
+<input
+id="searchLog"
+type="text"
+placeholder="🔍 ユーザー名・状態で検索..."
+style="
+max-width:350px;
+margin:0;
+">
+
+<div style="
+display:flex;
+gap:10px;
+">
+
+<button id="downloadCsv" class="button">
+📄 CSV
+</button>
+
+<button id="deleteLogs" class="button button-danger">
+🗑 全削除
+</button>
+
+</div>
+
+</div>
+
+<div style="
+overflow-x:auto;
+border-radius:14px;
+">
 <table>
 
 <thead>
