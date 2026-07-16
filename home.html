@@ -72,60 +72,45 @@ Administrator
 </a>
 
 </aside>
-
 <main>
 
-<h2>
-ダッシュボード
-</h2>
+<h2 style="margin-bottom:8px;">🏠 ダッシュボード</h2>
+
+<p style="color:#64748b;margin-bottom:30px;">
+PatternLock Secure の現在の状態です。
+</p>
 
 <div class="cards">
 
 <div class="card">
-
-<h3>
-👤 ユーザー
-</h3>
-
-<p id="userNameCard">
-...
-</p>
-
+<h3>👤 現在のユーザー</h3>
+<p id="userNameCard">...</p>
 </div>
 
 <div class="card">
-
-<h3>
-📜 ログ数
-</h3>
-
-<p id="logCount">
-...
-</p>
-
+<h3>📜 ログ数</h3>
+<p id="logCount">...</p>
 </div>
 
 <div class="card">
-
-<h3>
-🟢 成功率
-</h3>
-
-<p id="successRate">
-...
-</p>
-
+<h3>🟢 成功率</h3>
+<p id="successRate">...</p>
 </div>
 
 <div class="card">
+<h3>🔴 今日の失敗</h3>
+<p id="failedToday">...</p>
+</div>
 
-<h3>
-🔴 今日の失敗
-</h3>
+</div>
 
-<p id="failedToday">
-...
-</p>
+<div class="section">
+
+<div class="card">
+
+<h3>📈 ログイン統計</h3>
+
+<canvas id="loginChart"></canvas>
 
 </div>
 
@@ -133,23 +118,7 @@ Administrator
 
 <div class="section">
 
-<h2>
-📈 ログイン統計
-</h2>
-
-<canvas id="loginChart"></canvas>
-
-</div>
-
-    <div class="section">
-
-<h2>
-🔔 通知
-</h2>
-
-<div class="notification">
-
-<div class="notification">
+<div class="card">
 
 <h3>🔔 最新通知</h3>
 
@@ -157,7 +126,7 @@ Administrator
 読み込み中...
 </div>
 
-<hr style="margin:15px 0;">
+<hr style="margin:18px 0;">
 
 <div class="notice">
 🟢 システム状態：正常
@@ -168,9 +137,7 @@ Administrator
 </div>
 
 <div class="notice">
-🔒 PatternLock Secure v7 Enterprise
-</div>
-
+🔒 PatternLock Secure Enterprise
 </div>
 
 </div>
@@ -179,11 +146,16 @@ Administrator
 
 <div class="section">
 
-<h2>
-⚡ クイックアクション
-</h2>
+<div class="card">
 
-<div class="cards">
+<h3>⚡ クイックアクション</h3>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-top:20px;
+">
 
 <a class="button" href="users.html">
 👥 ユーザー管理
@@ -200,6 +172,8 @@ Administrator
 <a class="button" href="admin.html">
 ⚙ 管理画面
 </a>
+
+</div>
 
 </div>
 
