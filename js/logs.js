@@ -46,7 +46,15 @@ async function loadLogs() {
 
         tr.innerHTML = `
             <td>${log.username}</td>
-            <td>${status}</td>
+            <td>
+<span class="${
+    log.status === "success"
+        ? "success"
+        : "failed"
+}">
+${log.status === "success" ? "🟢 成功" : "🔴 失敗"}
+</span>
+</td>
             <td>${new Date(log.login_time).toLocaleString("ja-JP")}</td>
             <td>
                 <button onclick="deleteLog('${log.id}')"
@@ -232,5 +240,30 @@ function resetSearch() {
     document.getElementById("searchStatus").value = "";
 
     loadLogs();
+
+}
+
+// ----------------------
+// ログ検索
+// ----------------------
+
+const searchLog = document.getElementById("searchLog");
+
+if (searchLog) {
+
+    searchLog.addEventListener("input", function () {
+
+        const keyword = this.value.toLowerCase();
+
+        document.querySelectorAll("#logTable tr").forEach(row => {
+
+            row.style.display =
+                row.innerText.toLowerCase().includes(keyword)
+                    ? ""
+                    : "none";
+
+        });
+
+    });
 
 }
