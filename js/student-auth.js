@@ -66,10 +66,14 @@ async function authenticate(pattern) {
 
         // パターンが一致するユーザーを検索
         const { data, error } = await window.db
-            .from("users")
-            .select("username, pattern_hash, redirect_url, role")
-            .eq("pattern_hash", patternString)
-            .single();
+    .from("users")
+    .select("username, pattern_hash, redirect_url, role")
+    .eq("pattern_hash", patternString)
+    .single();
+
+console.log("pattern =", patternString);
+console.log("data =", data);
+console.log("error =", error);
 
         if (error || !data) {
 
