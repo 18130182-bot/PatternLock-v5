@@ -1,250 +1,56 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student PatternLock</title>
 
-<title>ログイン履歴</title>
-
-<link rel="stylesheet" href="css/dashboard.css">
-
-<style>
-
-.container{
-    max-width:1300px;
-    margin:40px auto;
-    padding:30px;
-}
-
-.page-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:15px;
-    margin-bottom:30px;
-}
-
-.page-title h1{
-    font-size:34px;
-}
-
-.page-title p{
-    color:#64748b;
-    margin-top:6px;
-}
-
-.card{
-    background:#fff;
-    border-radius:20px;
-    padding:30px;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-}
-
-.toolbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:15px;
-    margin-bottom:25px;
-}
-
-.search{
-    flex:1;
-    min-width:280px;
-}
-
-.button-group{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-}
-
-.table-box{
-    overflow:auto;
-    border-radius:16px;
-    border:1px solid #e5e7eb;
-}
-
-table{
-    width:100%;
-    min-width:850px;
-    border-collapse:collapse;
-}
-
-th{
-    position:sticky;
-    top:0;
-    background:#2563eb;
-    color:#fff;
-    padding:16px;
-    text-align:left;
-}
-
-td{
-    padding:16px;
-    border-bottom:1px solid #ececec;
-    vertical-align:middle;
-}
-
-tr:nth-child(even){
-    background:#fafafa;
-}
-
-tr:hover{
-    background:#eef4ff;
-}
-
-.status{
-    display:inline-block;
-    padding:6px 14px;
-    border-radius:999px;
-    color:#fff;
-    font-size:13px;
-    font-weight:bold;
-}
-
-.status.success{
-    background:#16a34a;
-}
-
-.status.failed{
-    background:#dc2626;
-}
-
-.time{
-    white-space:nowrap;
-}
-
-@media(max-width:700px){
-
-.page-title{
-    flex-direction:column;
-    align-items:flex-start;
-}
-
-.toolbar{
-    flex-direction:column;
-    align-items:stretch;
-}
-
-.button-group{
-    width:100%;
-}
-
-.button-group button{
-    flex:1;
-}
-
-}
-
-</style>
+<link rel="stylesheet" href="css/login.css">
 
 </head>
-
 <body>
 
-<div class="container">
+<div class="background"></div>
 
-<div class="page-title">
+<div class="login-card">
 
-<div>
+<div class="logo">
+☘
+</div>
 
-<h1>📜 ログイン履歴</h1>
+<h1>管理者 ログイン</h1>
 
-<p>
-PatternLock Secure のログイン履歴一覧
+<p class="subtitle">
+パターンを入力してください
 </p>
 
-</div>
+<div id="patternLock" class="pattern-lock">
+
+<svg id="patternCanvas"></svg>
+
+<div class="dot" data-id="1"></div>
+<div class="dot" data-id="2"></div>
+<div class="dot" data-id="3"></div>
+
+<div class="dot" data-id="4"></div>
+<div class="dot" data-id="5"></div>
+<div class="dot" data-id="6"></div>
+
+<div class="dot" data-id="7"></div>
+<div class="dot" data-id="8"></div>
+<div class="dot" data-id="9"></div>
 
 </div>
 
-<div class="card">
+<p id="message" class="message"></p>
 
-<div class="toolbar">
-
-<input
-id="searchLog"
-class="search"
-type="text"
-placeholder="🔍 ユーザー名・状態で検索">
-
-<div class="button-group">
-
-<button
-id="downloadCsv"
-class="button">
-
-📄 CSV
-
+<button id="loginButton">
+認証
 </button>
 
-<button
-id="deleteLogs"
-class="button button-danger">
-
-🗑 全削除
-
+<button id="resetButton" class="secondary">
+リセット
 </button>
-
-</div>
-
-</div>
-
-<div class="table-box">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th style="width:220px;">
-👤 ユーザー
-</th>
-
-<th style="width:170px;">
-状態
-</th>
-
-<th>
-ログイン日時
-</th>
-
-</tr>
-
-</thead>
-
-<tbody id="logTable">
-
-<tr>
-
-<td colspan="3"
-style="
-text-align:center;
-padding:45px;
-color:#64748b;
-">
-
-読み込み中...
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-<a class="back" href="home.html">
-
-← ダッシュボードへ戻る
-
-</a>
 
 </div>
 
@@ -252,8 +58,13 @@ color:#64748b;
 
 <script src="js/supabase.js"></script>
 
-<script src="js/logs.js"></script>
+<script src="js/pattern/core.js"></script>
+<script src="js/pattern/draw.js"></script>
+<script src="js/pattern/ui.js"></script>
+<script src="js/pattern/events.js"></script>
+
+<!-- 生徒用認証 -->
+<script src="js/student-auth.js"></script>
 
 </body>
-
 </html>
